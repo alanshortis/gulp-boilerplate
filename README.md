@@ -1,5 +1,8 @@
 # Gulp Boilerplate
 
-Boilerplate for gulp tasks.
+Boilerplate for gulp tasks. In progress.
 
-Not the most complete or complex, but adequate for most projects.
+### Tasks
+
+* SASS compilation with sourcemaps.
+* Autoprefix CSS
