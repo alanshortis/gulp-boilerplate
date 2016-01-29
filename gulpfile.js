@@ -8,6 +8,8 @@ var autoprefixer = require('gulp-autoprefixer');
 
 /* CSS (SASS compilation, autoprefixer and sourcemaps) */
 
+var sassSrc = 'sass/**/*.scss';
+var sassDest = 'css';
 var sassOptions = {
     errLogToConsole: true,
     outputStyle: 'expanded'
@@ -17,12 +19,12 @@ var autoprefixerOptions = {
 };
 
 gulp.task('sass', function () {
-    gulp.src('sass/**/*.scss')
+    gulp.src(sassSrc)
     .pipe(sourcemaps.init())
     .pipe(sass(sassOptions).on('error', sass.logError))
     .pipe(autoprefixer(autoprefixerOptions))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest('css'));
+    .pipe(gulp.dest(sassDest));
 });
 
 
@@ -30,7 +32,7 @@ gulp.task('sass', function () {
 
 // Watch
 gulp.task('watch', function () {
-    gulp.watch('./sass/**/*.scss', ['sass']);
+    gulp.watch(sassSrc, ['sass']);
 });
 
 // Default
