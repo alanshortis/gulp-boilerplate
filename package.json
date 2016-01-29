@@ -1,0 +1,14 @@
+{
+  "name": "gulp-bolierplate",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Gulp boilerplate",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alanshortis/gulp-boilerplate"
+  },
+  "author": "Alan Shortis",
+  "devDependencies": {
+    "gulp": "^3.9.0"
+  }
+}
