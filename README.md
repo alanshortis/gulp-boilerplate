@@ -12,6 +12,9 @@ Boilerplate for gulp tasks. In progress.
 `minify`
 * Minify CSS into a new file.
 
+`image`
+* Optimize images.
+
 `watch`
 * Watch SASS file for changes and run `css`.
 

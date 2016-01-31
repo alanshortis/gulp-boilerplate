@@ -7,10 +7,12 @@ var autoprefixer = require('gulp-autoprefixer');
 var cssnano = require('gulp-cssnano');
 var rename = require('gulp-rename');
 var header = require('gulp-header');
-
+var image = require('gulp-image');
 
 var sassSrc = 'sass/**/*.scss';
 var cssDest = 'css';
+var imgSrc = 'img';
+
 
 gulp.task('css', function () {
     return gulp.src(sassSrc)
@@ -31,9 +33,16 @@ gulp.task('minify', ['css'], function() {
 });
 
 
+gulp.task('image', function () {
+    gulp.src(imgSrc + '/*')
+        .pipe(image())
+        .pipe(gulp.dest(imgSrc));
+});
+
+
 gulp.task('watch', function () {
     gulp.watch(sassSrc, ['css']);
 });
 
 
-gulp.task('default', ['css', 'minify']);
+gulp.task('default', ['css', 'minify', 'image']);
