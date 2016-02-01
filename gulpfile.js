@@ -8,10 +8,14 @@ var cssnano = require('gulp-cssnano');
 var rename = require('gulp-rename');
 var header = require('gulp-header');
 var image = require('gulp-image');
+var del = require('del');
 
-var sassSrc = 'sass/**/*.scss';
-var cssDest = 'css';
-var imgSrc = 'img';
+var sassSrc = 'src/sass/**/*.scss';
+var cssDest = 'dist/css';
+var imgSrc = 'src/img';
+var imgDest = 'dist/img';
+var jsSrc = 'src/js';
+var jsDest = 'dist/js';
 
 
 gulp.task('css', function () {
@@ -36,13 +40,18 @@ gulp.task('minify', ['css'], function() {
 gulp.task('image', function () {
     gulp.src(imgSrc + '/*')
         .pipe(image())
-        .pipe(gulp.dest(imgSrc));
+        .pipe(gulp.dest(imgDest));
 });
 
 
 gulp.task('watch', function () {
     gulp.watch(sassSrc, ['css']);
 });
+
+
+gulp.task('clean', function() {
+    return del.sync('dist');
+})
 
 
 gulp.task('default', ['css', 'minify', 'image']);

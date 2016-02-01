@@ -18,5 +18,8 @@ Boilerplate for gulp tasks. In progress.
 `watch`
 * Watch SASS file for changes and run `css`.
 
+`clean`
+* Remove the entire `dist` folder.
+
 `default`
 * Run all tasks (aside from `watch`).
