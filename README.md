@@ -12,6 +12,12 @@ Boilerplate for gulp tasks. In progress.
 `minify`
 * Minify CSS into a new file.
 
+`js`
+* Concatenate a range of javaScript files.
+
+`uglify`
+* Uglify JavaScript into a new file.
+
 `image`
 * Optimize images.
 
