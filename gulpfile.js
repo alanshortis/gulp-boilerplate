@@ -1,21 +1,22 @@
 'use strict';
 
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var sourcemaps = require('gulp-sourcemaps');
-var autoprefixer = require('gulp-autoprefixer');
-var cssnano = require('gulp-cssnano');
-var rename = require('gulp-rename');
-var header = require('gulp-header');
-var image = require('gulp-image');
-var del = require('del');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+const autoprefixer = require('gulp-autoprefixer');
+const cssnano = require('gulp-cssnano');
+const rename = require('gulp-rename');
+const header = require('gulp-header');
+const image = require('gulp-image');
+const del = require('del');
+const concat = require('gulp-concat');
 
-var sassSrc = 'src/sass/**/*.scss';
-var cssDest = 'dist/css';
-var imgSrc = 'src/img';
-var imgDest = 'dist/img';
-var jsSrc = 'src/js';
-var jsDest = 'dist/js';
+const sassSrc = 'src/sass/**/*.scss';
+const cssDest = 'dist/css';
+const imgSrc = 'src/img';
+const imgDest = 'dist/img';
+const jsSrc = 'src/js';
+const jsDest = 'dist/js';
 
 
 gulp.task('css', function () {
@@ -30,15 +31,22 @@ gulp.task('css', function () {
 
 gulp.task('minify', ['css'], function() {
     return gulp.src(cssDest + '/style.css')
-        .pipe(rename('style.min.css'))
+        .pipe(rename({suffix: '.min'}))
         .pipe(cssnano())
         .pipe(header('/* <%= new Date() %> */\n'))
         .pipe(gulp.dest(cssDest));
 });
 
 
+gulp.task('js', function() {
+    return gulp.src(jsSrc + '/vendor/*.js')
+        .pipe(concat('libs.js'))
+        .pipe(gulp.dest(jsDest));
+});
+
+
 gulp.task('image', function () {
-    gulp.src(imgSrc + '/*')
+    return gulp.src(imgSrc + '/*')
         .pipe(image())
         .pipe(gulp.dest(imgDest));
 });
