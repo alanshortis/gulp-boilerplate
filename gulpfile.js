@@ -10,6 +10,7 @@ const header = require('gulp-header');
 const image = require('gulp-image');
 const del = require('del');
 const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
 
 const sassSrc = 'src/sass/**/*.scss';
 const cssDest = 'dist/css';
@@ -45,6 +46,14 @@ gulp.task('js', function() {
 });
 
 
+gulp.task('uglify', ['js'], function() {
+    return gulp.src(jsDest + '/libs.js')
+        .pipe(rename({suffix: '.min'}))
+        .pipe(uglify())
+        .pipe(gulp.dest(jsDest));
+});
+
+
 gulp.task('image', function () {
     return gulp.src(imgSrc + '/*')
         .pipe(image())
@@ -62,4 +71,4 @@ gulp.task('clean', function() {
 })
 
 
-gulp.task('default', ['css', 'minify', 'image']);
+gulp.task('default', ['css', 'minify', 'js', 'uglify', 'image']);
