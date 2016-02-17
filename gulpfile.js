@@ -47,7 +47,7 @@ gulp.task('js', function() {
 });
 
 
-gulp.task('lint', function () {
+gulp.task('eslint', function () {
   return gulp.src(['**/*.js', '!node_modules/**', '!**/*.min*', '!**/libs*', '!**/vendor/**'])
     .pipe(eslint())
     .pipe(eslint.format())
@@ -81,4 +81,4 @@ gulp.task('clean', function() {
 });
 
 
-gulp.task('default', ['css', 'minify', 'js', 'lint', 'uglify', 'image']);
+gulp.task('default', ['css', 'minify', 'js', 'eslint', 'uglify', 'image']);

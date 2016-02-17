@@ -15,6 +15,9 @@ Boilerplate for gulp tasks. In progress.
 `js`
 * Concatenate a range of javaScript files.
 
+`eslint`
+* Use ESLint to enforce JavaScript coding standards.
+
 `uglify`
 * Uglify JavaScript into a new file.
 
