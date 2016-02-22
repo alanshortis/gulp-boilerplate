@@ -37,7 +37,7 @@ gulp.task('css', () => {
 
 
 // Minify CSS.
-gulp.task('minify', ['cleanMinified', 'css'], () => {
+gulp.task('minify', ['css'], () => {
   return gulp.src(cssDest + '/style.css')
     .pipe(rename({suffix: '.min'}))
     .pipe(cssnano())
@@ -69,8 +69,8 @@ gulp.task('eslint', ['js'], () => {
 
 
 // Remove debug stuff (console.log, alert), uglify and save with a .min suffix.
-gulp.task('uglify', ['cleanUglified', 'eslint'], () => {
-  return gulp.src(jsDest + '/*.js')
+gulp.task('uglify', ['eslint'], () => {
+  return gulp.src(jsDest + '/*[^.min].js')
     .pipe(rename({suffix: '.min'}))
     .pipe(stripDebug())
     .pipe(uglify())
@@ -84,18 +84,6 @@ gulp.task('image', () => {
   return gulp.src(imgSrc + '/*')
     .pipe(image())
     .pipe(gulp.dest(imgDest));
-});
-
-
-// Remove all minified JS files.
-gulp.task('cleanUglified', () => {
-  return del.sync('dist/js/*.min.js');
-});
-
-
-// Remove all minified CSS files.
-gulp.task('cleanMinified', () => {
-  return del.sync('dist/css/*.min.css');
 });
 
 
