@@ -12,6 +12,7 @@ const gulp = require('gulp'),
       concat = require('gulp-concat'),
       uglify = require('gulp-uglify'),
       eslint = require('gulp-eslint'),
+      stripDebug = require('gulp-strip-debug'),
       merge = require('merge-stream');
 
 const sassSrc = 'src/sass/**/*.scss',
@@ -62,8 +63,9 @@ gulp.task('eslint', ['js'], function () {
 
 
 gulp.task('uglify', ['js', 'eslint'], function() {
-  return gulp.src(jsDest + '/libs.js')
+  return gulp.src(jsDest + '/*.js')
     .pipe(rename({suffix: '.min'}))
+    .pipe(stripDebug())
     .pipe(uglify())
     .pipe(gulp.dest(jsDest));
 });

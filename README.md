@@ -10,7 +10,7 @@ Boilerplate for gulp tasks. In progress.
 * Autoprefix CSS.
 
 `minify`
-* Minify CSS into a new file.
+* Minify CSS into a new file  with a `.min` suffix.
 
 `js`
 * Concatenate a range of javaScript files.
@@ -20,7 +20,8 @@ Boilerplate for gulp tasks. In progress.
 * Use ESLint to enforce JavaScript coding standards.
 
 `uglify`
-* Uglify JavaScript into a new file.
+* Remove `console.log` and `alert` debug messages.
+* Uglify JavaScript into a new file with a `.min` suffix.
 
 `image`
 * Optimize images.
