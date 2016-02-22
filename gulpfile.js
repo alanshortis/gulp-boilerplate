@@ -11,7 +11,8 @@ const gulp = require('gulp'),
       del = require('del'),
       concat = require('gulp-concat'),
       uglify = require('gulp-uglify'),
-      eslint = require('gulp-eslint');
+      eslint = require('gulp-eslint'),
+      merge = require('merge-stream');
 
 const sassSrc = 'src/sass/**/*.scss',
       cssDest = 'dist/css',
@@ -41,13 +42,18 @@ gulp.task('minify', ['css'], function() {
 
 
 gulp.task('js', function() {
-  return gulp.src(jsSrc + '/vendor/*.js')
+  const vendorScripts = gulp.src(jsSrc + '/vendor/*.js')
     .pipe(concat('libs.js'))
     .pipe(gulp.dest(jsDest));
+
+  const appScripts = gulp.src(jsSrc + '/project.js')
+    .pipe(gulp.dest(jsDest));
+
+  return merge(vendorScripts, appScripts);
 });
 
 
-gulp.task('eslint', function () {
+gulp.task('eslint', ['js'], function () {
   return gulp.src(['**/*.js', '!node_modules/**', '!**/*.min*', '!**/libs*', '!**/vendor/**'])
     .pipe(eslint())
     .pipe(eslint.format())
@@ -55,7 +61,7 @@ gulp.task('eslint', function () {
 });
 
 
-gulp.task('uglify', ['js'], function() {
+gulp.task('uglify', ['js', 'eslint'], function() {
   return gulp.src(jsDest + '/libs.js')
     .pipe(rename({suffix: '.min'}))
     .pipe(uglify())
@@ -72,7 +78,7 @@ gulp.task('image', function () {
 
 gulp.task('watch', function () {
   gulp.watch(sassSrc, ['css']);
-  gulp.watch(jsSrc + '/**', ['lint']);
+  gulp.watch(jsSrc + '/**', ['eslint']);
 });
 
 
@@ -81,4 +87,4 @@ gulp.task('clean', function() {
 });
 
 
-gulp.task('default', ['css', 'minify', 'js', 'eslint', 'uglify', 'image']);
+gulp.task('default', ['minify', 'uglify', 'image']);

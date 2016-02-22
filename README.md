@@ -14,6 +14,7 @@ Boilerplate for gulp tasks. In progress.
 
 `js`
 * Concatenate a range of javaScript files.
+* Copy a 'project' JS file to the dist folder.
 
 `eslint`
 * Use ESLint to enforce JavaScript coding standards.
@@ -25,10 +26,11 @@ Boilerplate for gulp tasks. In progress.
 * Optimize images.
 
 `watch`
-* Watch SASS file for changes and run `css`.
+* Watch SASS files for changes and run `css`.
+* Watch JavaScript files for changes and run `eslint`.
 
 `clean`
 * Remove the entire `dist` folder.
 
 `default`
-* Run all tasks (aside from `watch`).
+* Run all tasks.
