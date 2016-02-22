@@ -67,7 +67,7 @@ gulp.task('eslint', ['js'], () => {
 
 
 // Remove debug stuff (console.log, alert), uglify and save with a .min suffix.
-gulp.task('uglify', ['eslint'], () => {
+gulp.task('uglify', ['cleanUglified', 'eslint'], () => {
   return gulp.src(jsDest + '/*.js')
     .pipe(rename({suffix: '.min'}))
     .pipe(stripDebug())
@@ -81,6 +81,18 @@ gulp.task('image', () => {
   return gulp.src(imgSrc + '/*')
     .pipe(image())
     .pipe(gulp.dest(imgDest));
+});
+
+
+// Remove all minified JS files.
+gulp.task('cleanUglified', () => {
+  return del.sync('dist/js/*.min.js');
+});
+
+
+// Remove all minified CSS files.
+gulp.task('cleanMinified', () => {
+  return del.sync('dist/css/*.min.css');
 });
 
 
