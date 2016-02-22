@@ -1,26 +1,28 @@
 'use strict';
 
 const gulp = require('gulp'),
-      sass = require('gulp-sass'),
-      sourcemaps = require('gulp-sourcemaps'),
       autoprefixer = require('gulp-autoprefixer'),
+      concat = require('gulp-concat'),
       cssnano = require('gulp-cssnano'),
-      rename = require('gulp-rename'),
+      eslint = require('gulp-eslint'),
       header = require('gulp-header'),
       image = require('gulp-image'),
-      del = require('del'),
-      concat = require('gulp-concat'),
-      uglify = require('gulp-uglify'),
-      eslint = require('gulp-eslint'),
+      rename = require('gulp-rename'),
+      sass = require('gulp-sass'),
+      sourcemaps = require('gulp-sourcemaps'),
       stripDebug = require('gulp-strip-debug'),
-      merge = require('merge-stream');
+      uglify = require('gulp-uglify'),
+      del = require('del'),
+      merge = require('merge-stream'),
+      pkg = require('./package.json');
 
 const sassSrc = 'src/sass/**/*.scss',
       cssDest = 'dist/css',
       imgSrc = 'src/img',
       imgDest = 'dist/img',
       jsSrc = 'src/js',
-      jsDest = 'dist/js';
+      jsDest = 'dist/js',
+      fileHeader = '/* ' + pkg.name + ' | ' + new Date() + ' */\n';
 
 
 // Build CSS from SASS with sourcemaps and autoprefix.
@@ -39,7 +41,7 @@ gulp.task('minify', ['cleanMinified', 'css'], () => {
   return gulp.src(cssDest + '/style.css')
     .pipe(rename({suffix: '.min'}))
     .pipe(cssnano())
-    .pipe(header('/* <%= new Date() %> */\n'))
+    .pipe(header(fileHeader))
     .pipe(gulp.dest(cssDest));
 });
 
@@ -72,6 +74,7 @@ gulp.task('uglify', ['cleanUglified', 'eslint'], () => {
     .pipe(rename({suffix: '.min'}))
     .pipe(stripDebug())
     .pipe(uglify())
+    .pipe(header(fileHeader))
     .pipe(gulp.dest(jsDest));
 });
 
