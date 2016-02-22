@@ -23,7 +23,8 @@ const sassSrc = 'src/sass/**/*.scss',
       jsDest = 'dist/js';
 
 
-gulp.task('css', function () {
+// Build CSS from SASS with sourcemaps and autoprefix.
+gulp.task('css', () => {
   return gulp.src(sassSrc)
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
@@ -33,7 +34,8 @@ gulp.task('css', function () {
 });
 
 
-gulp.task('minify', ['css'], function() {
+// Minify CSS.
+gulp.task('minify', ['cleanMinified', 'css'], () => {
   return gulp.src(cssDest + '/style.css')
     .pipe(rename({suffix: '.min'}))
     .pipe(cssnano())
@@ -42,7 +44,8 @@ gulp.task('minify', ['css'], function() {
 });
 
 
-gulp.task('js', function() {
+// Concatenate vendor scripts and copy project code to the dist folder.
+gulp.task('js', () => {
   const vendorScripts = gulp.src(jsSrc + '/vendor/*.js')
     .pipe(concat('libs.js'))
     .pipe(gulp.dest(jsDest));
@@ -54,7 +57,8 @@ gulp.task('js', function() {
 });
 
 
-gulp.task('eslint', ['js'], function () {
+// Lint our JavaScript, aside from node modules and vendor scripts. Rule are in .eslintrc.
+gulp.task('eslint', ['js'], () => {
   return gulp.src(['**/*.js', '!node_modules/**', '!**/*.min*', '!**/libs*', '!**/vendor/**'])
     .pipe(eslint())
     .pipe(eslint.format())
@@ -62,7 +66,8 @@ gulp.task('eslint', ['js'], function () {
 });
 
 
-gulp.task('uglify', ['js', 'eslint'], function() {
+// Remove debug stuff (console.log, alert), uglify and save with a .min suffix.
+gulp.task('uglify', ['eslint'], () => {
   return gulp.src(jsDest + '/*.js')
     .pipe(rename({suffix: '.min'}))
     .pipe(stripDebug())
@@ -71,22 +76,26 @@ gulp.task('uglify', ['js', 'eslint'], function() {
 });
 
 
-gulp.task('image', function () {
+// Optimise images and put them in the dist folder.
+gulp.task('image', () => {
   return gulp.src(imgSrc + '/*')
     .pipe(image())
     .pipe(gulp.dest(imgDest));
 });
 
 
-gulp.task('watch', function () {
+// Delete entire 'dist' folder.
+gulp.task('clean', () => {
+  return del.sync('dist');
+});
+
+
+// Watch for changes to CSS and JS files; compile SASS and lint JS accordingly.
+gulp.task('watch', () => {
   gulp.watch(sassSrc, ['css']);
   gulp.watch(jsSrc + '/**', ['eslint']);
 });
 
 
-gulp.task('clean', function() {
-  return del.sync('dist');
-});
-
-
+// Do everything.
 gulp.task('default', ['minify', 'uglify', 'image']);
