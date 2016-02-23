@@ -6,6 +6,10 @@
   "rules": {
     "semi": 2,
     "indent": [2, 2, {'VariableDeclarator': {'var': 2, 'let': 2, 'const': 3}}],
-    "no-unused-vars": 2
+    "camelcase": 2,
+    "no-unused-vars": 2,
+    "no-delete-var": 2,
+    "no-var": 1,
+    "prefer-template": 1
   }
 }
