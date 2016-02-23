@@ -11,6 +11,7 @@ const gulp = require('gulp'),
       eslint = require('gulp-eslint'),
       header = require('gulp-header'),
       image = require('gulp-image'),
+      modernizr = require('gulp-modernizr'),
       rename = require('gulp-rename'),
       sass = require('gulp-sass'),
       sourcemaps = require('gulp-sourcemaps'),
@@ -21,9 +22,11 @@ const gulp = require('gulp'),
 
 // Source folders
 const src = {
+  src: 'src',
   sass: 'src/sass/**/*.scss',
   img: 'src/img',
-  js: 'src/js'
+  js: 'src/js',
+  vendor: 'src/js/vendor'
 };
 
 // Destination folders
@@ -44,7 +47,9 @@ gulp.task('css', () => {
   return gulp.src(src.sass)
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
-    .pipe(autoprefixer({browsers: ['last 2 versions']}))
+    .pipe(autoprefixer({
+      browsers: ['last 2 versions']
+    }))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(dest.css));
 });
@@ -53,16 +58,30 @@ gulp.task('css', () => {
 // Minify CSS.
 gulp.task('minify', ['css'], () => {
   return gulp.src(`${dest.css}/style.css`)
-    .pipe(rename({suffix: '.min'}))
+    .pipe(rename({
+      suffix: '.min'
+    }))
     .pipe(cssnano())
     .pipe(header(fileHeader))
     .pipe(gulp.dest(dest.css));
 });
 
 
+// Custom modernizr build
+gulp.task('modernizr', () => {
+  gulp.src([`${src.src}/**/*.{scss,js}`, `!${src.vendor}/**/*.js`])
+    .pipe(modernizr({
+      'options': [
+        'mq'
+      ]
+    }))
+    .pipe(gulp.dest(src.vendor));
+});
+
+
 // Concatenate vendor scripts and copy project code to the dist folder.
-gulp.task('js', () => {
-  const vendorScripts = gulp.src(`${src.js}/vendor/*.js`)
+gulp.task('js', ['modernizr'], () => {
+  const vendorScripts = gulp.src(`${src.vendor}/*.js`)
     .pipe(concat('libs.js'))
     .pipe(gulp.dest(dest.js));
 
@@ -84,8 +103,10 @@ gulp.task('eslint', ['js'], () => {
 
 // Remove debug stuff (console.log, alert), uglify and save with a .min suffix.
 gulp.task('uglify', ['eslint'], () => {
-  return gulp.src(`${dest.js}/*[^.min].js`)
-    .pipe(rename({suffix: '.min'}))
+  return gulp.src([`${dest.js}/*.js`, `!${dest.js}/**/*.min.js`])
+    .pipe(rename({
+      suffix: '.min'
+    }))
     .pipe(stripDebug())
     .pipe(uglify())
     .pipe(header(fileHeader))
