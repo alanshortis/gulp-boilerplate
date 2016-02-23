@@ -25,6 +25,7 @@ const src = {
   src: 'src',
   sass: 'src/sass/**/*.scss',
   img: 'src/img',
+  icons: 'src/img/icons',
   js: 'src/js',
   vendor: 'src/js/vendor'
 };
@@ -115,11 +116,17 @@ gulp.task('uglify', ['eslint'], () => {
 });
 
 
-// Optimise images and put them in the dist folder.
-gulp.task('image', () => {
-  return gulp.src(`${src.img}/*`)
+// Optimise images and put them in the dist folder, or keep them where they are if they're icons that will be put in a sprite.
+gulp.task('images', () => {
+  const optImages = gulp.src(`${src.img}/*`)
     .pipe(image())
     .pipe(gulp.dest(dest.img));
+
+  const optIcons = gulp.src(`${src.img}/icons/*.svg`)
+    .pipe(image())
+    .pipe(gulp.dest(src.icons));
+
+  return merge(optImages, optIcons);
 });
 
 
@@ -137,4 +144,4 @@ gulp.task('watch', () => {
 
 
 // Do everything.
-gulp.task('default', ['minify', 'uglify', 'image']);
+gulp.task('default', ['minify', 'uglify', 'images']);
