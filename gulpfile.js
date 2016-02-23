@@ -71,6 +71,7 @@ gulp.task('minify', ['css'], () => {
 gulp.task('modernizr', () => {
   gulp.src([`${src.src}/**/*.{scss,js}`, `!${src.vendor}/**/*.js`])
     .pipe(modernizr({
+      'cache': true,
       'options': [
         'mq'
       ]

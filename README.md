@@ -12,6 +12,9 @@ Boilerplate for gulp tasks. In progress.
 `minify`
 * Minify CSS into a new file  with a `.min` suffix.
 
+`modernizr`
+* Crawls `scss` and `js` files to make a custom modernizr build. Explicitly includes `mq`.
+
 `js`
 * Concatenate a range of javaScript files.
 * Copy a 'project' JS file to the dist folder.
