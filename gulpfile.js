@@ -1,5 +1,9 @@
 'use strict';
 
+// Get our package manifest so we can use it's content
+const pkg = require('./package.json');
+
+// Import packages
 const gulp = require('gulp'),
       autoprefixer = require('gulp-autoprefixer'),
       concat = require('gulp-concat'),
@@ -13,47 +17,57 @@ const gulp = require('gulp'),
       stripDebug = require('gulp-strip-debug'),
       uglify = require('gulp-uglify'),
       del = require('del'),
-      merge = require('merge-stream'),
-      pkg = require('./package.json');
+      merge = require('merge-stream');
 
-const sassSrc = 'src/sass/**/*.scss',
-      cssDest = 'dist/css',
-      imgSrc = 'src/img',
-      imgDest = 'dist/img',
-      jsSrc = 'src/js',
-      jsDest = 'dist/js',
-      fileHeader = '/* ' + pkg.name + ' | ' + new Date() + ' */\n';
+// Source folders
+const src = {
+  sass: 'src/sass/**/*.scss',
+  img: 'src/img',
+  js: 'src/js'
+};
+
+// Destination folders
+const dest = {
+  css: 'dist/css',
+  img: 'dist/img',
+  js: 'dist/js'
+};
+
+// Banner to be placed on our minified/uglified files
+const fileHeader = `/* ${pkg.name} | ${new Date()} */\n`;
+
+console.log(fileHeader);
 
 
 // Build CSS from SASS with sourcemaps and autoprefix.
 gulp.task('css', () => {
-  return gulp.src(sassSrc)
+  return gulp.src(src.sass)
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
     .pipe(autoprefixer({browsers: ['last 2 versions']}))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest(cssDest));
+    .pipe(gulp.dest(dest.css));
 });
 
 
 // Minify CSS.
 gulp.task('minify', ['css'], () => {
-  return gulp.src(cssDest + '/style.css')
+  return gulp.src(`${dest.css}/style.css`)
     .pipe(rename({suffix: '.min'}))
     .pipe(cssnano())
     .pipe(header(fileHeader))
-    .pipe(gulp.dest(cssDest));
+    .pipe(gulp.dest(dest.css));
 });
 
 
 // Concatenate vendor scripts and copy project code to the dist folder.
 gulp.task('js', () => {
-  const vendorScripts = gulp.src(jsSrc + '/vendor/*.js')
+  const vendorScripts = gulp.src(`${src.js}/vendor/*.js`)
     .pipe(concat('libs.js'))
-    .pipe(gulp.dest(jsDest));
+    .pipe(gulp.dest(dest.js));
 
-  const appScripts = gulp.src(jsSrc + '/project.js')
-    .pipe(gulp.dest(jsDest));
+  const appScripts = gulp.src(`${src.js}/project.js`)
+    .pipe(gulp.dest(dest.js));
 
   return merge(vendorScripts, appScripts);
 });
@@ -70,20 +84,20 @@ gulp.task('eslint', ['js'], () => {
 
 // Remove debug stuff (console.log, alert), uglify and save with a .min suffix.
 gulp.task('uglify', ['eslint'], () => {
-  return gulp.src(jsDest + '/*[^.min].js')
+  return gulp.src(`${dest.js}/*[^.min].js`)
     .pipe(rename({suffix: '.min'}))
     .pipe(stripDebug())
     .pipe(uglify())
     .pipe(header(fileHeader))
-    .pipe(gulp.dest(jsDest));
+    .pipe(gulp.dest(dest.js));
 });
 
 
 // Optimise images and put them in the dist folder.
 gulp.task('image', () => {
-  return gulp.src(imgSrc + '/*')
+  return gulp.src(`${src.img}/*`)
     .pipe(image())
-    .pipe(gulp.dest(imgDest));
+    .pipe(gulp.dest(dest.img));
 });
 
 
@@ -95,8 +109,8 @@ gulp.task('clean', () => {
 
 // Watch for changes to CSS and JS files; compile SASS and lint JS accordingly.
 gulp.task('watch', () => {
-  gulp.watch(sassSrc, ['css']);
-  gulp.watch(jsSrc + '/**', ['eslint']);
+  gulp.watch(src.sass, ['css']);
+  gulp.watch(`${src.js}/**`, ['eslint']);
 });
 
 
