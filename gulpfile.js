@@ -16,6 +16,8 @@ const gulp = require('gulp'),
       sass = require('gulp-sass'),
       sourcemaps = require('gulp-sourcemaps'),
       stripDebug = require('gulp-strip-debug'),
+      svgmin = require('gulp-svgmin'),
+      svgstore = require('gulp-svgstore'),
       uglify = require('gulp-uglify'),
       del = require('del'),
       merge = require('merge-stream');
@@ -25,7 +27,7 @@ const src = {
   src: 'src',
   sass: 'src/sass/**/*.scss',
   img: 'src/img',
-  icons: 'src/img/icons',
+  icons: 'src/img/icons/*.svg',
   js: 'src/js',
   vendor: 'src/js/vendor'
 };
@@ -116,17 +118,27 @@ gulp.task('uglify', ['eslint'], () => {
 });
 
 
-// Optimise images and put them in the dist folder, or keep them where they are if they're icons that will be put in a sprite.
+// Optimise images and put them in the dist folder.
 gulp.task('images', () => {
-  const optImages = gulp.src(`${src.img}/*`)
+  return gulp.src([`${src.img}/*`, `!${src.img}/icons`])
     .pipe(image())
     .pipe(gulp.dest(dest.img));
+});
 
-  const optIcons = gulp.src(`${src.img}/icons/*.svg`)
-    .pipe(image())
-    .pipe(gulp.dest(src.icons));
 
-  return merge(optImages, optIcons);
+// Make an SVG sprite.
+gulp.task('svgsprite', () => {
+  return gulp.src(src.icons)
+  .pipe(svgmin({
+    plugins: [{
+      removeUselessStrokeAndFill: true
+    }]
+  }))
+  .pipe(rename({
+    prefix: 'icon-'
+  }))
+  .pipe(svgstore())
+  .pipe(gulp.dest(dest.img));
 });
 
 
@@ -144,4 +156,4 @@ gulp.task('watch', () => {
 
 
 // Do everything.
-gulp.task('default', ['minify', 'uglify', 'images']);
+gulp.task('default', ['minify', 'uglify', 'images', 'svgsprite']);
