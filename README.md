@@ -1,6 +1,6 @@
 # Gulp Boilerplate
 
-Boilerplate for gulp tasks. In progress.
+Boilerplate for gulp tasks.
 
 ### Tasks
 
@@ -28,6 +28,10 @@ Boilerplate for gulp tasks. In progress.
 
 `image`
 * Optimize images.
+
+`svgsprite`
+* Optimise SVG icons.
+* Spite all SVG icons so they be used using `use`.
 
 `watch`
 * Watch SASS files for changes and run `css`.
