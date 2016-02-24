@@ -98,7 +98,7 @@ gulp.task('js', ['modernizr'], () => {
 
 // Lint our JavaScript, aside from node modules and vendor scripts. Rule are in .eslintrc.
 gulp.task('eslint', ['js'], () => {
-  return gulp.src(['**/*.js', '!node_modules/**', '!**/*.min*', '!**/libs*', '!**/vendor/**'])
+  return gulp.src(['gulpfile.js', `${src.js}/*.js`])
     .pipe(eslint())
     .pipe(eslint.format())
     .pipe(eslint.failOnError());
