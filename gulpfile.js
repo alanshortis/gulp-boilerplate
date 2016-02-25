@@ -6,6 +6,7 @@ const pkg = require('./package.json');
 // Import packages
 const gulp = require('gulp'),
       autoprefixer = require('gulp-autoprefixer'),
+      cheerio = require('gulp-cheerio'),
       concat = require('gulp-concat'),
       cssnano = require('gulp-cssnano'),
       eslint = require('gulp-eslint'),
@@ -143,10 +144,12 @@ gulp.task('images', () => {
 // Make an SVG sprite.
 gulp.task('svgsprite', () => {
   return gulp.src(src.icons)
-  .pipe(svgmin({
-    plugins: [{
-      removeUselessStrokeAndFill: true
-    }]
+  .pipe(svgmin())
+  .pipe(cheerio({
+    run: function ($) {
+      $('[fill]').removeAttr('fill');
+    },
+    parserOptions: { xmlMode: true }
   }))
   .pipe(rename({
     prefix: 'icon-'
