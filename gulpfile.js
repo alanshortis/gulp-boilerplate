@@ -20,7 +20,8 @@ const gulp = require('gulp'),
       svgstore = require('gulp-svgstore'),
       uglify = require('gulp-uglify'),
       del = require('del'),
-      merge = require('merge-stream');
+      merge = require('merge-stream'),
+      notifier = require('node-notifier');
 
 // Source folders
 const src = {
@@ -49,7 +50,14 @@ console.log(fileHeader);
 gulp.task('css', () => {
   return gulp.src(src.sass)
     .pipe(sourcemaps.init())
-    .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
+    .pipe(sass({outputStyle: 'expanded'})
+    .on('error', function(err) {
+      sass.logError.call(this, err);
+      notifier.notify({
+        title: 'Gulp',
+        message: 'SASS error - see terminal for details.'
+      });
+    }))
     .pipe(autoprefixer({
       browsers: ['last 2 versions']
     }))
@@ -101,7 +109,13 @@ gulp.task('eslint', ['js'], () => {
   return gulp.src(['gulpfile.js', `${src.js}/*.js`])
     .pipe(eslint())
     .pipe(eslint.format())
-    .pipe(eslint.failOnError());
+    .pipe(eslint.failAfterError())
+    .on('error', () => {
+      notifier.notify({
+        title: 'Gulp',
+        message: 'Liniting failed - see terminal for details.'
+      });
+    });
 });
 
 
