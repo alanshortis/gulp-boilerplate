@@ -44,8 +44,6 @@ const dest = {
 // Banner to be placed on our minified/uglified files
 const fileHeader = `/* ${pkg.name} | ${new Date()} */\n`;
 
-console.log(fileHeader);
-
 
 // Build CSS from SASS with sourcemaps and autoprefix.
 gulp.task('css', () => {
