@@ -83,7 +83,8 @@ gulp.task('modernizr', () => {
     .pipe(modernizr({
       'cache': true,
       'options': [
-        'mq'
+        'mq',
+        'setClasses'
       ]
     }))
     .pipe(gulp.dest(src.vendor));
