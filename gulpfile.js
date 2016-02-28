@@ -147,6 +147,7 @@ gulp.task('svgsprite', () => {
   .pipe(cheerio({
     run: function ($) {
       $('[fill]').removeAttr('fill');
+      $('style').remove();
     },
     parserOptions: { xmlMode: true }
   }))
