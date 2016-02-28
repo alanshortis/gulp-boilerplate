@@ -11,7 +11,8 @@
 * Minify CSS into a new file  with a `.min` suffix.
 
 `modernizr`
-* Crawls `scss` and `js` files to make a custom modernizr build. Explicitly includes `mq`.
+* Crawls `scss` and `js` files to make a custom modernizr build.
+* Explicity includes `mq` and `setClasses`.
 
 `js`
 * Concatenate a range of javaScript files.
@@ -28,7 +29,10 @@
 * Optimize images.
 
 `svgsprite`
-* Optimise SVG icons, add `icon-` prefix to their IDs and remove the needless `fill` attribute.
+* Optimise SVG icons.
+* Prefix each symbol's ID with `icon-`.
+* Remove `fill` attribute from each `path`.
+* Remove `style` tags.
 * Create an SVG sprite.
 
 `watch`
@@ -40,3 +44,9 @@
 
 `default`
 * Run all tasks.
+
+
+### To do
+* Add unit tests.
+* Refine default build; ensure modernizr custom build is complete before running other JS tasks.
+* Add [browsersync](https://browsersync.io/).
