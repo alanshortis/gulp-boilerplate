@@ -33,7 +33,7 @@ gulp.task('css', () => {
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.sass({outputStyle: 'expanded'})
     .on('error', function(err) {
-      sass.logError.call(this, err);
+      plugins.sass.logError.call(this, err);
       notifier.notify({
         title: 'Gulp',
         message: 'SASS error - see terminal for details.'
