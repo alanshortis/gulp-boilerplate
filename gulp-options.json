@@ -1,0 +1,16 @@
+{
+  "src": {
+    "src": "src",
+    "sass": "src/sass/**/*.scss",
+    "img": "src/img",
+    "icons": "src/img/icons/*.svg",
+    "js": "src/js",
+    "vendor": "src/js/vendor"
+  },
+  "dest" : {
+    "dest": "dist",
+    "css": "dist/css",
+    "img": "dist/img",
+    "js": "dist/js"
+  }
+}
