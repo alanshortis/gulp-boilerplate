@@ -47,6 +47,4 @@
 
 
 ### To do
-* Add unit tests.
-* Refine default build; ensure modernizr custom build is complete before running other JS tasks.
-* Add [browsersync](https://browsersync.io/).
+Bugs and Enhancements can be found under [issues](https://github.com/alanshortis/gulp-boilerplate/issues).
