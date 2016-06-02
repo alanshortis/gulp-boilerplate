@@ -1,5 +1,9 @@
 # Gulp Boilerplate
 
+I wouldn't recommend using this gulpfile as is. This is becoming less of a working example and more of a collection of task configurations that can be used in 'proper' gulpfiles in projects.
+
+I will eventually split this into multiple 'recipes'.
+
 ### Tasks
 
 `css`
@@ -15,6 +19,10 @@
 * Explicity includes `mq` and `setClasses`.
 
 `js`
+* Use browserify to bundle JavaScript modules.
+* Includes a transform for Handlebars, for HTML templates in JS.
+
+`concat`
 * Concatenate a range of javaScript files.
 * Copy a 'project' JS file to the dist folder.
 
