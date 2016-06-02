@@ -16,7 +16,7 @@
       "js": "src/js",
       "vendor": "src/js/vendor"
     },
-    "dest" : {
+    "dest": {
       "dest": "dist",
       "css": "dist/css",
       "img": "dist/img",
@@ -25,6 +25,7 @@
   },
   "author": "Alan Shortis",
   "devDependencies": {
+    "browserify": "^13.0.1",
     "del": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
@@ -42,7 +43,11 @@
     "gulp-svgmin": "^1.2.2",
     "gulp-svgstore": "^5.0.5",
     "gulp-uglify": "^1.5.2",
+    "handlebars": "^4.0.5",
+    "hbsfy": "^2.7.0",
     "merge-stream": "^1.0.0",
-    "node-notifier": "^4.5.0"
+    "node-notifier": "^4.5.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   }
 }

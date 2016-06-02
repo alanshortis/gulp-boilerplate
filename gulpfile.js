@@ -17,9 +17,13 @@ const gulp = require('gulp'),
       svgmin = require('gulp-svgmin'),
       svgstore = require('gulp-svgstore'),
       uglify = require('gulp-uglify'),
+      browserify = require('browserify'),
+      buffer = require('vinyl-buffer'),
       del = require('del'),
+      hbsfy = require('hbsfy'),
       merge = require('merge-stream'),
       notifier = require('node-notifier'),
+      source = require('vinyl-source-stream'),
       pkg = require('./package.json');
 
 // Banner to be placed on our minified/uglified files
@@ -72,7 +76,20 @@ gulp.task('modernizr', () => {
 });
 
 
+// Browserify, with a transform for handlebars
+gulp.task('js', ['eslint'], () => {
+  return browserify({entries: `${pkg.folders.src.js}/app.js`, extensions: ['.hbs', '.js'], debug: true, transform: [hbsfy]})
+    .bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest(`${pkg.folders.dest.js}/`));
+});
+
+
 // Concatenate vendor scripts and copy project code to the dist folder.
+// Browserify should be used over this, but I'll leave this in anyway.
 gulp.task('js', ['modernizr'], () => {
   const vendorScripts = gulp.src(`${pkg.folders.src.vendor}/*.js`)
     .pipe(concat('libs.js'))
@@ -149,9 +166,9 @@ gulp.task('clean', () => {
 // Watch for changes to CSS and JS files; compile SASS and lint JS accordingly.
 gulp.task('watch', () => {
   gulp.watch(pkg.folders.src.sass, ['css']);
-  gulp.watch(`${pkg.folders.src.js}/**`, ['eslint']);
+  gulp.watch(`${pkg.folders.src.js}/**`, ['js']);
 });
 
 
 // Do everything.
-gulp.task('default', ['minify', 'uglify', 'images', 'svgsprite']);
+gulp.task('default', ['minify', 'js', 'uglify', 'images', 'svgsprite']);
