@@ -90,7 +90,7 @@ gulp.task('js', ['eslint'], () => {
 
 // Concatenate vendor scripts and copy project code to the dist folder.
 // Browserify should be used over this, but I'll leave this in anyway.
-gulp.task('js', ['modernizr'], () => {
+gulp.task('concat', () => {
   const vendorScripts = gulp.src(`${pkg.folders.src.vendor}/*.js`)
     .pipe(concat('libs.js'))
     .pipe(gulp.dest(pkg.folders.dest.js));
@@ -171,4 +171,4 @@ gulp.task('watch', () => {
 
 
 // Do everything.
-gulp.task('default', ['minify', 'js', 'uglify', 'images', 'svgsprite']);
+gulp.task('default', ['minify', 'js', 'concat', 'uglify', 'images', 'svgsprite']);
